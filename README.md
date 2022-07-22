@@ -1,2 +1,2 @@
 # shell
-Shell component to create database and perform other admin activities
+Shell component to interact with the BitFever platform and perform admin activities
