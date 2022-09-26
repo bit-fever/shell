@@ -43,7 +43,6 @@ var addCmd = &cobra.Command{
 //=============================================================================
 
 func init() {
-	exchangeCmd.AddCommand(addCmd)
 
 	// Here you will define your flags and configuration settings.
 

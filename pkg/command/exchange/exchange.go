@@ -25,27 +25,23 @@ THE SOFTWARE.
 package exchange
 
 import (
-	"fmt"
-	"github.com/bit-fever/shell/pkg/command"
-
 	"github.com/spf13/cobra"
 )
 
 //=============================================================================
 
-var exchangeCmd = &cobra.Command{
+var ExchangeCmd = &cobra.Command{
 	Use:   "exchange",
 	Short: "Run exchange related commands",
 	Long:  `Run commands affecting the exchange server, like list, add, remove, etc...`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("exchange called")
-	},
+	//Run: func(cmd *cobra.Command, args []string) {
+	//	fmt.Println("exchange called")
+	//},
 }
 
 //=============================================================================
 
 func init() {
-	command.RootCmd.AddCommand(exchangeCmd)
 
 	// Here you will define your flags and configuration settings.
 
@@ -56,6 +52,10 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// exchangeCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	ExchangeCmd.AddCommand(addCmd)
+	ExchangeCmd.AddCommand(getCmd)
+	ExchangeCmd.AddCommand(listCmd)
+	ExchangeCmd.AddCommand(removeCmd)
 }
 
 //=============================================================================

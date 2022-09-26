@@ -28,6 +28,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/bit-fever/shell/pkg/command/exchange"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -42,7 +43,7 @@ var cfgFile string
 var RootCmd = &cobra.Command{
 	Use:   "shell",
 	Short: "Bit Fever Shell",
-	Long:  `A CLI command that allows to interact with a BitFever platform`,
+	Long:  `A command line interface that allows to interact with a BitFever platform`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("shell called")
 	},
@@ -71,6 +72,8 @@ func init() {
 
 	// Cobra also supports local flags, which will only run when this action is called directly.
 	RootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+
+	RootCmd.AddCommand(exchange.ExchangeCmd)
 }
 
 //=============================================================================
@@ -85,7 +88,7 @@ func initConfig() {
 		home, err := os.UserHomeDir()
 		cobra.CheckErr(err)
 
-		// Search config in home directory with name ".bfc" (without extension).
+		// Search config in home directory with name ".bfs" (without extension).
 		viper.AddConfigPath(home)
 		viper.SetConfigType("yaml")
 		viper.SetConfigName(".bfs")

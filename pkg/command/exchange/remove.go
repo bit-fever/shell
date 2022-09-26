@@ -43,7 +43,6 @@ var removeCmd = &cobra.Command{
 //=============================================================================
 
 func init() {
-	exchangeCmd.AddCommand(removeCmd)
 
 	// Here you will define your flags and configuration settings.
 
