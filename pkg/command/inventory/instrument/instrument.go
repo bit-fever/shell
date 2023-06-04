@@ -1,6 +1,6 @@
 //=============================================================================
 /*
-Copyright © 2022 Andrea Carboni andrea.carboni71@gmail.com
+Copyright © 2023 Andrea Carboni andrea.carboni71@gmail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -22,22 +22,19 @@ THE SOFTWARE.
 */
 //=============================================================================
 
-package exchange
+package instrument
 
-import (
-	"fmt"
-	"github.com/spf13/cobra"
-)
+import "github.com/spf13/cobra"
 
 //=============================================================================
 
-var removeCmd = &cobra.Command{
-	Use:   "remove",
-	Short: "Remove an exchange from the list",
-	Long:  `....`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("remove called")
-	},
+var Command = &cobra.Command{
+	Use:   "instrument",
+	Short: "Run instrument related commands",
+	Long:  `Run commands affecting instruments, like list, add, remove, etc...`,
+	//Run: func(cmd *cobra.Command, args []string) {
+	//	fmt.Println("inventory called")
+	//},
 }
 
 //=============================================================================
@@ -48,11 +45,15 @@ func init() {
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// removeCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// exchangeCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// removeCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// exchangeCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	Command.AddCommand(addCmd)
+	Command.AddCommand(getCmd)
+	Command.AddCommand(listCmd)
+	Command.AddCommand(removeCmd)
 }
 
 //=============================================================================

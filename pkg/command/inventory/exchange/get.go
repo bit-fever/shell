@@ -25,18 +25,19 @@ THE SOFTWARE.
 package exchange
 
 import (
+	"fmt"
 	"github.com/spf13/cobra"
 )
 
 //=============================================================================
 
-var ExchangeCmd = &cobra.Command{
-	Use:   "exchange",
-	Short: "Run exchange related commands",
-	Long:  `Run commands affecting the exchange server, like list, add, remove, etc...`,
-	//Run: func(cmd *cobra.Command, args []string) {
-	//	fmt.Println("exchange called")
-	//},
+var getCmd = &cobra.Command{
+	Use:   "get",
+	Short: "Get information on a specific inventory",
+	Long:  `....`,
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("get called")
+	},
 }
 
 //=============================================================================
@@ -47,15 +48,11 @@ func init() {
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// exchangeCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// getCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// exchangeCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	ExchangeCmd.AddCommand(addCmd)
-	ExchangeCmd.AddCommand(getCmd)
-	ExchangeCmd.AddCommand(listCmd)
-	ExchangeCmd.AddCommand(removeCmd)
+	// getCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
 //=============================================================================

@@ -28,7 +28,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/bit-fever/shell/pkg/command/exchange"
+	"github.com/bit-fever/shell/pkg/command/inventory"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -45,7 +45,7 @@ var RootCmd = &cobra.Command{
 	Short: "Bit Fever Shell",
 	Long:  `A command line interface that allows to interact with a BitFever platform`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("shell called")
+		fmt.Printf("Shell was called: %v with %v", cmd, args)
 	},
 }
 
@@ -73,7 +73,7 @@ func init() {
 	// Cobra also supports local flags, which will only run when this action is called directly.
 	RootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
-	RootCmd.AddCommand(exchange.ExchangeCmd)
+	RootCmd.AddCommand(inventory.Command)
 }
 
 //=============================================================================

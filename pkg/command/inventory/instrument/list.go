@@ -22,29 +22,24 @@ THE SOFTWARE.
 */
 //=============================================================================
 
-package exchange
+package instrument
 
 import (
-	"crypto/tls"
-	"crypto/x509"
-	"encoding/json"
 	"fmt"
+	"github.com/bit-fever/shell/pkg/model"
+	"github.com/bit-fever/shell/pkg/tool"
 	"github.com/spf13/cobra"
-	"io/ioutil"
-	"log"
-	"net/http"
-	"time"
 )
 
 //=============================================================================
 
 var listCmd = &cobra.Command{
 	Use:   "list",
-	Short: "List all exchanges",
+	Short: "List all instruments",
 	Long:  `...`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("list called")
-		listExchanges()
+		listInstruments()
 	},
 }
 
@@ -65,62 +60,13 @@ func init() {
 
 //=============================================================================
 
-type Exchange struct {
-	Code     string  `json:"code,omitempty"`
-	Name     string  `json:"name"`
-	MakerFee float64 `json:"maker_fee"`
-	TakerFee float64 `json:"taker_fee"`
-	ApiKey   string  `json:"api_key"`
-	Secret   string  `json:"secret"`
-	Test     bool    `json:"test"`
-}
-
-//=============================================================================
-
-func listExchanges() {
-	cert, err := ioutil.ReadFile("config/ca.crt")
-	if err != nil {
-		log.Fatalf("Could not open certificate file: %v", err)
-	}
-	caCertPool := x509.NewCertPool()
-	caCertPool.AppendCertsFromPEM(cert)
-
-	certificate, err := tls.LoadX509KeyPair("config/client.crt", "config/client.key")
-	if err != nil {
-		log.Fatalf("Could not load certificate: %v", err)
-	}
-
-	client := &http.Client{
-		Timeout: time.Minute * 3,
-		Transport: &http.Transport{
-			TLSClientConfig: &tls.Config{
-				RootCAs:      caCertPool,
-				Certificates: []tls.Certificate{certificate},
-			},
-		},
-	}
-
-	url := "https://bitfever-server:8443/api/exchange/v1/exchanges"
-
-	res, err := client.Get(url)
-	if err != nil {
-		log.Fatalf("Error making get request: %v", err)
-	}
-
-	// Read the response body
-	defer res.Body.Close()
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		log.Fatalf("error reading response: %v", err)
-	}
+func listInstruments() {
+	url := "https://bitfever-server:8443/api/inventory/v1/instruments"
 
 	// Print the response body to stdout
 	//fmt.Printf("%s\n", body)
-	data_obj := []Exchange{}
-	jsonErr := json.Unmarshal(body, &data_obj)
-	if jsonErr != nil {
-		log.Fatal(jsonErr)
-	}
+	data_obj := []model.Exchange{}
+	tool.DoGet(url, &data_obj)
 
 	for _, exc := range data_obj {
 		fmt.Println("Code:", exc.Code, ", name:", exc.Name)

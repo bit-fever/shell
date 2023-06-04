@@ -22,22 +22,23 @@ THE SOFTWARE.
 */
 //=============================================================================
 
-package exchange
+package inventory
 
 import (
-	"fmt"
+	"github.com/bit-fever/shell/pkg/command/inventory/exchange"
+	"github.com/bit-fever/shell/pkg/command/inventory/instrument"
 	"github.com/spf13/cobra"
 )
 
 //=============================================================================
 
-var getCmd = &cobra.Command{
-	Use:   "get",
-	Short: "Get information on a specific exchange",
-	Long:  `....`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("get called")
-	},
+var Command = &cobra.Command{
+	Use:   "inventory",
+	Short: "Run inventory related commands",
+	Long:  `Run commands affecting the inventory server, like list, add, remove, etc...`,
+	//Run: func(cmd *cobra.Command, args []string) {
+	//	fmt.Println("inventory called")
+	//},
 }
 
 //=============================================================================
@@ -48,11 +49,14 @@ func init() {
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// getCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// exchangeCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// getCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// exchangeCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+
+	Command.AddCommand(exchange.Command)
+	Command.AddCommand(instrument.Command)
 }
 
 //=============================================================================
