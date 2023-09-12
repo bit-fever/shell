@@ -26,6 +26,8 @@ package instrument
 
 import (
 	"fmt"
+	"github.com/bit-fever/shell/pkg/model"
+	"github.com/bit-fever/shell/pkg/tool"
 	"github.com/spf13/cobra"
 )
 
@@ -36,7 +38,7 @@ var addCmd = &cobra.Command{
 	Short: "Add a new inventory",
 	Long:  `...`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("add called")
+		addInstrument()
 	},
 }
 
@@ -53,6 +55,29 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// addCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+}
+
+//=============================================================================
+
+func addInstrument() {
+	url := "https://bitfever-server:8443/api/inventory/v1/instruments"
+
+	data := model.Instrument{
+		Symbol:        "@TS",
+		Name:          "Test",
+		MarketType:    "GA",
+		SecurityType:  "AA",
+		ExchangeId:    1,
+		DatasourceId:  1,
+		CurrencyId:    1,
+		PriceScale:    1,
+		MinMovement:   2,
+		BigPointValue: 3,
+	}
+
+	tool.DoPut(url, &data, &data)
+
+	fmt.Println("Instrument added with id=", data.Id)
 }
 
 //=============================================================================

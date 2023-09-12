@@ -38,7 +38,6 @@ var listCmd = &cobra.Command{
 	Short: "List all instruments",
 	Long:  `...`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("list called")
 		listInstruments()
 	},
 }
@@ -63,13 +62,11 @@ func init() {
 func listInstruments() {
 	url := "https://bitfever-server:8443/api/inventory/v1/instruments"
 
-	// Print the response body to stdout
-	//fmt.Printf("%s\n", body)
-	data_obj := []model.Exchange{}
-	tool.DoGet(url, &data_obj)
+	var data []model.Instrument
+	tool.DoGet(url, &data)
 
-	for _, exc := range data_obj {
-		fmt.Println("Code:", exc.Code, ", name:", exc.Name)
+	for _, i := range data {
+		fmt.Println("Symbol:", i.Symbol, ", name:", i.Name)
 	}
 }
 

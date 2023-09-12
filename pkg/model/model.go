@@ -24,12 +24,35 @@ THE SOFTWARE.
 
 package model
 
+import "time"
+
+//=============================================================================
+
+type Instrument struct {
+	Id             uint      `json:"id"`
+	ExchangeId     int       `json:"exchange-id"`
+	DatasourceId   int       `json:"datasource-id"`
+	Symbol         string    `json:"symbol"`
+	Name           string    `json:"name"`
+	ExpirationDate int       `json:"expiration-date"`
+	PriceScale     int       `json:"price-scale"`
+	MinMovement    float32   `json:"min-movement"`
+	BigPointValue  int       `json:"big-point-value"`
+	CurrencyId     int       `json:"currency-id"`
+	MarketType     string    `json:"market-type"`
+	SecurityType   string    `json:"security-type"`
+	CreatedAt      time.Time `json:"created-at"`
+	UpdatedAt      time.Time `json:"updated-at"`
+}
+
 //=============================================================================
 
 type Exchange struct {
-	Id   int    `json:"id"`
-	Code string `json:"code,omitempty"`
-	Name string `json:"name"`
+	Id        uint      `json:"id"`
+	Code      string    `json:"code"`
+	Name      string    `json:"name"`
+	CreatedAt time.Time `json:"created-at"`
+	UpdatedAt time.Time `json:"updated-at"`
 }
 
 //=============================================================================

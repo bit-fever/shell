@@ -25,6 +25,7 @@ THE SOFTWARE.
 package tool
 
 import (
+	"bytes"
 	"crypto/tls"
 	"crypto/x509"
 	"encoding/json"
@@ -37,7 +38,30 @@ import (
 
 //=============================================================================
 
-func DoGet(url string, data any) {
+func DoGet(url string, output any) {
+	client := createClient()
+	res, err := client.Get(url)
+	buildResponse(res, err, &output)
+}
+
+//=============================================================================
+
+func DoPut(url string, params any, output any) {
+	client := createClient()
+
+	body, err := json.Marshal(&params)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	reader := bytes.NewReader(body)
+	res, err := client.Post(url, "Application/json", reader)
+	buildResponse(res, err, &output)
+}
+
+//=============================================================================
+
+func createClient() *http.Client {
 	cert, err := os.ReadFile("config/ca.crt")
 	if err != nil {
 		log.Fatalf("Could not open certificate file: %v", err)
@@ -50,7 +74,7 @@ func DoGet(url string, data any) {
 		log.Fatalf("Could not load certificate: %v", err)
 	}
 
-	client := &http.Client{
+	return &http.Client{
 		Timeout: time.Minute * 3,
 		Transport: &http.Transport{
 			TLSClientConfig: &tls.Config{
@@ -59,13 +83,16 @@ func DoGet(url string, data any) {
 			},
 		},
 	}
+}
 
-	res, err := client.Get(url)
+//=============================================================================
+
+func buildResponse(res *http.Response, err error, output any) {
 	if err != nil {
-		log.Fatalf("Error making get request: %v", err)
+		log.Fatalf("Error sending request: %v", err)
 	}
 
-	if res.StatusCode != 200 {
+	if res.StatusCode >= 400 {
 		log.Fatalf("Error from the server: %v", res.Status)
 	}
 
@@ -73,11 +100,12 @@ func DoGet(url string, data any) {
 	defer res.Body.Close()
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
-		log.Fatalf("error reading response: %v", err)
+		log.Fatalf("Error reading response: %v", err)
 	}
-	jsonErr := json.Unmarshal(body, &data)
-	if jsonErr != nil {
-		log.Fatal(jsonErr)
+
+	err = json.Unmarshal(body, &output)
+	if err != nil {
+		log.Fatalf("Bad JSON response from server:\n%v", err)
 	}
 }
 
